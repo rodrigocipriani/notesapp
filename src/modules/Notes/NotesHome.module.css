@@ -4,3 +4,7 @@
 .noteContent {
   white-space: pre-line;
 }
+
+.noteTextField {
+  overflow: hidden;
+}

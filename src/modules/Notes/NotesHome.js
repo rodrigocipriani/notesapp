@@ -9,11 +9,8 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import MoreVert from "@material-ui/icons/MoreVert";
 import classes from "./NotesHome.module.css";
-import NoteComponent from "./NoteComponent";
 
 export default ({ notes, changeNote }) => {
-  console.log("notes", notes);
-
   const [activeNote, setActiveNote] = useState(null);
 
   const handleClickNote = id => () => {
@@ -47,10 +44,12 @@ export default ({ notes, changeNote }) => {
                   id={`textfield-${note.id}`}
                   label="Content"
                   multiline
-                  rowsMax="4"
+                  fullWidth
+                  // rowsMax="4"
                   value={note.content}
                   onChange={handleChangeNote(note.id)}
                   margin="normal"
+                  className={classes.noteTextField}
                 />
               ) : (
                 <ListItemText
