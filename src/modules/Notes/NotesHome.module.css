@@ -1,2 +1,6 @@
 .root {
 }
+
+.noteContent {
+  white-space: pre-line;
+}

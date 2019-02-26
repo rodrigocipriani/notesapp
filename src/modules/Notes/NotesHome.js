@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -6,18 +6,28 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 import MoreVert from "@material-ui/icons/MoreVert";
 import classes from "./NotesHome.module.css";
+import NoteComponent from "./NoteComponent";
 
-export default ({ notes, newNote }) => {
+export default ({ notes, changeNote }) => {
   console.log("notes", notes);
 
-  const handleToggle = value => () => {
-    console.log("value", value);
+  const [activeNote, setActiveNote] = useState(null);
+
+  const handleClickNote = id => () => {
+    console.log("id", id);
+    setActiveNote(id);
   };
 
   const handleAddNewNote = () => () => {
     console.log("new note");
+  };
+
+  const handleChangeNote = id => event => {
+    console.log("change note ", event.target.value);
+    changeNote(id, event.target.value);
   };
 
   return (
@@ -30,14 +40,24 @@ export default ({ notes, newNote }) => {
               role={undefined}
               dense
               button
-              onClick={handleToggle(note.id)}
+              onClick={handleClickNote(note.id)}
             >
-              {/* <Checkbox
-                checked={this.state.checked.indexOf(value) !== -1}
-                tabIndex={-1}
-                disableRipple
-              /> */}
-              <ListItemText primary={note.content} />
+              {activeNote === note.id ? (
+                <TextField
+                  id={`textfield-${note.id}`}
+                  label="Content"
+                  multiline
+                  rowsMax="4"
+                  value={note.content}
+                  onChange={handleChangeNote(note.id)}
+                  margin="normal"
+                />
+              ) : (
+                <ListItemText
+                  className={classes.noteContent}
+                  primary={note.content}
+                />
+              )}
               <ListItemSecondaryAction>
                 <IconButton aria-label="Comments">
                   <MoreVert />

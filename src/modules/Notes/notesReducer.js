@@ -18,6 +18,16 @@ export default (state = initialState, action) => {
         content: action.payload
       };
       return { ...state, notes: [...state.notes, note] };
+    case notesActionTypes.CHANGE_NOTE:
+      const id = action.payload.id;
+      const content = action.payload.content;
+      const notes = state.notes.map(note => {
+        if (id !== note.id) {
+          return note;
+        }
+        return { ...note, content };
+      });
+      return { ...state, notes };
     default:
       return state;
   }
