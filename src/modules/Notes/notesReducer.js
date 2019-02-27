@@ -1,23 +1,20 @@
 import { notesActionTypes } from "./notesActions";
+const uuidv1 = require("uuid/v1");
 
 const initialState = {
-  notes: [
-    {
-      id: 0,
-      content: "aaa"
-    }
-  ]
+  notes: []
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case notesActionTypes.NEW_NOTE:
-      // console.log("action", action);
       const note = {
-        id: state.notes[state.notes.length - 1].id + 1,
-        content: action.payload
+        id: uuidv1(),
+        content: "",
+        new: true
       };
       return { ...state, notes: [...state.notes, note] };
+
     case notesActionTypes.CHANGE_NOTE:
       const id = action.payload.id;
       const content = action.payload.content;
@@ -25,9 +22,13 @@ export default (state = initialState, action) => {
         if (id !== note.id) {
           return note;
         }
-        return { ...note, content };
+        return { ...note, content, new: false };
       });
       return { ...state, notes };
+
+    case notesActionTypes.RESET_LAST_NOTE_ID:
+      return { ...state, lastNoteId: null };
+
     default:
       return state;
   }

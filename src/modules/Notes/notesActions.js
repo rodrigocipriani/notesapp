@@ -1,6 +1,7 @@
 const notesActionTypes = {
   NEW_NOTE: "NEW_NOTE",
-  CHANGE_NOTE: "CHANGE_NOTE"
+  CHANGE_NOTE: "CHANGE_NOTE",
+  RESET_LAST_NOTE_ID: "RESET_LAST_NOTE_ID"
 };
 
 export const newNote = content => ({
