@@ -1,14 +1,33 @@
 import React, { Component } from "react";
 import { Provider } from "react-redux";
-import store from "../../shared/store";
+// import { BrowserRouter as Router, Route } from "react-router-dom";
+import { store, persistor } from "../../shared/store";
 import NotesHome from "../Notes/NotesHome";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import { PersistGate } from "redux-persist/integration/react";
+import WeatherApp from "../Weather/WeatherApp";
 import "./App.css";
 
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <NotesHome />
+        <PersistGate loading={null} persistor={persistor}>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography type="title" color="inherit">
+                Notes by Cipriani
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          {/* <Router>
+      <Route path={urls.home.path} component={WeatherComponent} />
+    </Router> */}
+          <WeatherApp />
+          <NotesHome />
+        </PersistGate>
       </Provider>
     );
   }

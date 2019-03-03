@@ -2,9 +2,25 @@ import { combineReducers, createStore } from "redux";
 import appReducer from "../modules/App/appReducer";
 import editorReducer from "../modules/Editor/editorReducer";
 import notesReducer from "../modules/Notes/notesReducer";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import rootReducer from "../modules/Weather/rootReducer";
 
-const reducers = combineReducers({ appReducer, editorReducer, notesReducer });
+const persistConfig = {
+  key: "root",
+  storage
+};
 
-const store = createStore(reducers);
+const reducers = combineReducers({
+  rootReducer,
+  appReducer,
+  editorReducer,
+  notesReducer
+});
 
-export default store;
+const persistedReducer = persistReducer(persistConfig, reducers);
+
+let store = createStore(persistedReducer);
+let persistor = persistStore(store);
+
+export { store, persistor };

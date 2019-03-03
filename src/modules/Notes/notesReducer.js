@@ -2,6 +2,7 @@ import { notesActionTypes } from "./notesActions";
 const uuidv1 = require("uuid/v1");
 
 const initialState = {
+  // {id, content}
   notes: []
 };
 

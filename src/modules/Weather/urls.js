@@ -1,0 +1,17 @@
+const urls = {
+  home: { name: "Home", path: "/" },
+  data: { name: "Data", path: "/data" },
+  add: { name: "Add", path: "/add" },
+  login: { name: "Login", path: "/login" },
+  notes: { name: "Notes", path: "/notes" }
+};
+
+const privateUrls = {
+  edit: {
+    name: "Edit",
+    path: "/edit/:id",
+    pathWithouParam: "/edit/"
+  }
+};
+
+export { urls, privateUrls };
