@@ -1,3 +1,5 @@
+import { appApi } from "../../shared/api";
+
 const notesActionTypes = {
   LOAD_NOTES: "LOAD_NOTES",
   NEW_NOTE: "NEW_NOTE",
@@ -5,9 +7,9 @@ const notesActionTypes = {
   RESET_LAST_NOTE_ID: "RESET_LAST_NOTE_ID"
 };
 
-export const loadNotes = content => ({
+export const loadNotes = () => ({
   type: notesActionTypes.LOAD_NOTES,
-  payload: content
+  promise: appApi.get("/v1/note/list")
 });
 
 export const newNote = content => ({

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { newNote, changeNote } from "./notesActions";
+import { newNote, changeNote, loadNotes } from "./notesActions";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -11,10 +11,18 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import MoreVert from "@material-ui/icons/MoreVert";
 import classes from "./NotesHome.module.css";
-import { Paper } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 
-const NotesHome = ({ notes, lastNoteId, changeNote, newNote }) => {
+const NotesHome = ({ notes, changeNote, newNote, loadNotes, loading }) => {
   const [activeNote, setActiveNote] = useState(null);
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    if (!initialized) {
+      loadNotes();
+      setInitialized(true);
+    }
+  });
 
   const handleClickNote = id => () => {
     // console.log("id", id);
@@ -39,9 +47,16 @@ const NotesHome = ({ notes, lastNoteId, changeNote, newNote }) => {
     }
     changeNote(note.id, event.target.value);
   };
-
+  console.log("loading.notes", loading.notes);
   return (
     <Grid container spacing={8}>
+      {loading.notes && (
+        <Grid item xs={12}>
+          <Typography variant="caption" gutterBottom>
+            Atualizando...
+          </Typography>
+        </Grid>
+      )}
       <Grid item xs={12}>
         <List className={classes.root}>
           {notes.map(note => (
@@ -94,13 +109,15 @@ const NotesHome = ({ notes, lastNoteId, changeNote, newNote }) => {
 
 const mapStateToProps = ({ notesReducer }, ownProps) => {
   return {
-    notes: notesReducer.notes
+    notes: notesReducer.notes,
+    loading: notesReducer.loading
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   newNote: content => dispatch(newNote(content)),
-  changeNote: (id, content) => dispatch(changeNote(id, content))
+  changeNote: (id, content) => dispatch(changeNote(id, content)),
+  loadNotes: () => dispatch(loadNotes())
 });
 
 export default connect(

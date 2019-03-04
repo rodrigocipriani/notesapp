@@ -2,6 +2,7 @@ const path = require("path");
 
 module.exports = {
   publicFolder: path.join(process.cwd(), "..", "client", "build"),
+  apiUrl: "http://localhost:4000/api",
   corsOriginsAccept: [
     "http://localhost",
     "http://127.0.0.1",
@@ -33,13 +34,5 @@ module.exports = {
   tokenSecret: "R#3@qICGjbCE0J#H8@2Y",
   lib: {
     bcrypt: "bcrypt"
-  },
-  firebaseConfig: {
-    apiKey: "",
-    authDomain: "",
-    databaseURL: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: ""
   }
 };

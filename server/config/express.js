@@ -19,7 +19,7 @@ module.exports = () => {
   app.set("views", "./app/views");
   app.engine("html", ejs.renderFile);
   app.set("view engine", "html");
-
+  console.log(`config.corsOriginsAccept`, config.corsOriginsAccept);
   app.use(
     cors({
       origin: config.corsOriginsAccept,
