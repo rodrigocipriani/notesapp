@@ -1,10 +1,19 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # configs
-/src/config.js
+/client/src/config.js
+.config.local.js
+.config.development.js
+.config.homolog.js
+.config.production.js
+
+# build
+/client/build
 
 # dependencies
 /node_modules
+/server/node_modules
+/client/node_modules
 /.pnp
 .pnp.js
 package-lock.json
