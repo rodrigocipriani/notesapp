@@ -14,6 +14,8 @@ import classes from "./NotesHome.module.css";
 import { Paper, Typography } from "@material-ui/core";
 import useDebounce from "../../shared/debounceHook";
 
+const DEBOUNCE_DELAY = 500;
+
 const NotesHome = ({
   notes,
   saveNote,
@@ -25,7 +27,7 @@ const NotesHome = ({
 }) => {
   const [initialized, setInitialized] = useState(false);
 
-  const debounceActiveNote = useDebounce(activeNote, 2000);
+  const debounceActiveNote = useDebounce(activeNote, DEBOUNCE_DELAY);
 
   useEffect(() => {
     if (!initialized) {

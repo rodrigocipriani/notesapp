@@ -3,7 +3,9 @@ module.exports = app => {
   const NoteModel = app.models.models.Note;
 
   service.listNote = () => {
-    return NoteModel.findAll();
+    return NoteModel.findAll({
+      order: [["created_at", "ASC"]]
+    });
   };
 
   service.saveNote = note => {

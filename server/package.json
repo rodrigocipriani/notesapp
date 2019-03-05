@@ -14,8 +14,6 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "bcrypt": "^3.0.3",
-    "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.3",
     "cls-bluebird": "^2.1.0",
@@ -34,15 +32,8 @@
     "moment": "^2.23.0",
     "morgan": "^1.9.1",
     "node-serialize": "0.0.4",
-    "nodemailer": "^5.0.0",
-    "passport": "^0.4.0",
-    "passport-facebook": "^2.1.1",
-    "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0",
     "pg": "^6.4.2",
-    "rpc-websockets": "^4.0.0",
-    "sequelize": "^4.42.0",
-    "serve-favicon": "^2.4.5"
+    "sequelize": "^4.42.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

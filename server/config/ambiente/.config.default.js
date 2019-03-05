@@ -10,12 +10,12 @@ module.exports = {
   ],
   port: 4000,
   postgres: {
-    usuario: "lqoupxuo",
-    senha: "h5ct8bGxXvy9uyyjz2FotS8Ynt4or-lm",
-    db: "lqoupxuo",
+    usuario: process.env.POSTGRES_USER || "postgres",
+    senha: process.env.POSTGRES_PWD || "h5ct8bGxXvy9uyyjz2FotS8Ynt4or-lm",
+    db: process.env.POSTGRES_DB || "lqoupxuo",
     config: {
-      host: "stampy.db.elephantsql.com",
-      port: 5432,
+      host: process.env.POSTGRES_HOST || "stampy.db.elephantsql.com",
+      port: process.env.POSTGRES_PORT || 5432,
       dialect: "postgres",
       dialectOptions: {
         ssl: true
@@ -29,9 +29,5 @@ module.exports = {
         maxIdleTime: 60
       }
     }
-  },
-  tokenSecret: "R#3@qICGjbCE0J#H8@2Y",
-  lib: {
-    bcrypt: "bcrypt"
   }
 };

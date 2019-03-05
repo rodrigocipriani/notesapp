@@ -1,6 +1,6 @@
 const defaultConfig = require("./ambiente/.config.default");
-const development = require("./ambiente/.config.development");
-const production = require("./ambiente/.config.production");
+const development = require("./ambiente/.config.development") || {};
+const production = require("./ambiente/.config.production") || {};
 
 const env = {
   isDevelopment: false,
