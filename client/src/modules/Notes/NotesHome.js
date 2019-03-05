@@ -27,7 +27,7 @@ const NotesHome = ({
 }) => {
   const [initialized, setInitialized] = useState(false);
 
-  const debounceActiveNote = useDebounce(activeNote, DEBOUNCE_DELAY);
+  const debounceActiveNote = useDebounce(activeNote.content, DEBOUNCE_DELAY);
 
   useEffect(() => {
     if (!initialized) {
@@ -38,6 +38,7 @@ const NotesHome = ({
 
   useEffect(() => {
     if (debounceActiveNote && activeNote && activeNote.content) {
+      console.log("AAAAAAAAAAAAAAA");
       saveNote(activeNote);
     }
   }, [debounceActiveNote]);
@@ -82,20 +83,29 @@ const NotesHome = ({
                 button
                 onClick={handleSelectNote(note)}
               >
-                {activeNote.id === note.id || note.new ? (
-                  <TextField
-                    id={`textfield-${note.id}`}
-                    // label="Content"
-                    multiline
-                    autoFocus
-                    fullWidth
-                    // rowsMax="4"
-                    value={activeNote.content}
-                    onChange={handleChangeNote}
-                    margin="normal"
-                    onBlur={handleExitNote(note)}
-                    className={classes.noteTextField}
-                  />
+                {activeNote.id === note.id ? (
+                  <Grid container>
+                    <Grid item xs={12}>
+                      <TextField
+                        id={`textfield-${note.id}`}
+                        // label="Content"
+                        multiline
+                        autoFocus
+                        fullWidth
+                        // rowsMax="4"
+                        value={activeNote.content}
+                        onChange={handleChangeNote}
+                        margin="normal"
+                        onBlur={handleExitNote(activeNote)}
+                        className={classes.noteTextField}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="caption" gutterBottom>
+                        {activeNote.unsavedChanges ? "Salvando..." : "Salvo"}
+                      </Typography>
+                    </Grid>
+                  </Grid>
                 ) : (
                   <ListItemText
                     className={classes.noteContent}

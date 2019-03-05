@@ -4,7 +4,7 @@ module.exports = app => {
 
   service.listNote = () => {
     return NoteModel.findAll({
-      order: [["created_at", "ASC"]]
+      order: [["created_at", "DESC"]]
     });
   };
 

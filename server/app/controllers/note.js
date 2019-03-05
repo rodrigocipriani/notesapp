@@ -19,7 +19,7 @@ module.exports = app => {
     return NoteService.saveNote(note)
       .then(data => {
         // In postgres we can get object back from db
-        res.status(200).send(data[1].dataValues);
+        res.status(200).send(data[1] ? data[1].dataValues : data);
       })
       .catch(err => {
         console.error("Error: ", err);

@@ -1,4 +1,4 @@
-import { notesActionTypes } from "./notesActions";
+import { notesActionTypes, newNote } from "./notesActions";
 
 const initialState = {
   // notes: {id, content}
@@ -29,13 +29,21 @@ export default (state = initialState, action) => {
   }
 
   if (type === notesActionTypes.NEW_NOTE) {
-    return { ...state, notes: [...state.notes, action.payload] };
+    return {
+      ...state,
+      notes: [action.payload, ...state.notes],
+      activeNote: action.payload
+    };
   }
 
   if (type === notesActionTypes.SAVE_CONTENT) {
     return {
       ...state,
-      activeNote: { ...state.activeNote, content: action.payload }
+      activeNote: {
+        ...state.activeNote,
+        content: action.payload,
+        unsavedChanges: true
+      }
     };
   }
 
@@ -45,6 +53,7 @@ export default (state = initialState, action) => {
   ) {
     if (action.ready) {
       const activeSavedNote = action.payload.data;
+
       if (type === notesActionTypes.SAVE_AND_CLOSE_NOTE) {
         const newNotes = state.notes.map(note => {
           if (note.id === activeSavedNote.id) {
@@ -52,9 +61,40 @@ export default (state = initialState, action) => {
           }
           return note;
         });
-        return { ...state, activeNote: {}, notes: newNotes };
+        console.log(
+          "activeSavedNote.id === state.activeNote",
+          activeSavedNote.id === state.activeNote
+        );
+        console.log("activeSavedNote.id", activeSavedNote.id);
+        console.log("=state.activeNote", state.activeNote.id);
+        return {
+          ...state,
+          activeNote:
+            activeSavedNote.id === state.activeNote.id ? {} : state.activeNote,
+          notes: newNotes
+        };
       }
-      return { ...state, activeNote: activeSavedNote };
+      const retorno = {
+        ...state,
+        activeNote: {
+          ...state.activeNote,
+          unsavedChanges: false
+        }
+      };
+      if (!state.activeNote.id) {
+        retorno.activeNote.id = activeSavedNote.id;
+
+        const newNotesWithId = state.notes.map(note => {
+          if (note.id === state.activeNote.id) {
+            note.id = activeSavedNote.id;
+            return note;
+          }
+          return note;
+        });
+
+        retorno.notes = newNotesWithId;
+      }
+      return retorno;
     } else {
       const note = action.payload;
       note.unsavedChanges = true;
@@ -63,41 +103,4 @@ export default (state = initialState, action) => {
   }
 
   return state;
-
-  // switch (action.type) {
-  //   case notesActionTypes.LOAD_NOTES:
-  //     if (action.ready) {
-  //       return {
-  //         ...state,
-  //         notes: action.payload.data,
-  //         loading: { ...state.loading, notes: false }
-  //       };
-  //     }
-  //     return { ...state, loading: { ...state.loading, notes: true } };
-
-  //   case notesActionTypes.NEW_NOTE:
-  //     return { ...state, notes: [...state.notes, action.payload] };
-
-  //   case notesActionTypes.SAVE_NOTE:
-  //     if (action.ready) {
-  //       const note = action.payload.data;
-  //       note.unsavedChanges = true;
-  //       return { ...state, activeNote: note };
-  //     } else {
-  //       return { ...state, activeNote: action.payload };
-  //     }
-
-  //   case notesActionTypes.SAVE_AND_CLOSE_NOTE:
-  //     if (action.ready) {
-  //       return { ...state, activeNote: action.payload.data };
-  //     } else {
-  //       return { ...state, activeNote: action.payload };
-  //     }
-
-  //   case notesActionTypes.RESET_LAST_NOTE_ID:
-  //     return { ...state, lastNoteId: null };
-
-  //   default:
-  //     return state;
-  // }
 };
