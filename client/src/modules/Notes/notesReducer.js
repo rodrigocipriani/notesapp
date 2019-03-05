@@ -61,12 +61,6 @@ export default (state = initialState, action) => {
           }
           return note;
         });
-        console.log(
-          "activeSavedNote.id === state.activeNote",
-          activeSavedNote.id === state.activeNote
-        );
-        console.log("activeSavedNote.id", activeSavedNote.id);
-        console.log("=state.activeNote", state.activeNote.id);
         return {
           ...state,
           activeNote:
