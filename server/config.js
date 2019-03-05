@@ -1,8 +1,6 @@
 require("dotenv").config();
 const path = require("path");
 
-console.log("process.env.POSTGRES_USER", process.env.POSTGRES_USER);
-
 module.exports = {
   publicFolder: path.join(process.cwd(), "..", "client", "build"),
   corsOriginsAccept: [

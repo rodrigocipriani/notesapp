@@ -5,7 +5,7 @@ const Sequelize = require("sequelize");
 const Promise = require("bluebird");
 const clsBluebird = require("cls-bluebird");
 // const BBModels    = require('bb-models')();
-const config = require("../../config/config");
+const config = require("../../config");
 
 const namespace = cls.createNamespace("cls-pg-bwl");
 clsBluebird(namespace, Promise);

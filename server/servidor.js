@@ -1,7 +1,7 @@
 const http = require("http");
 const app = require("./config/express")();
 const cluster = require("cluster");
-const config = require("./config/config");
+const config = require("./config");
 
 const env = config.env;
 const isProduction = process.env.NODE_ENV === "production";
