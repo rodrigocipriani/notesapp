@@ -4,11 +4,12 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
   "scripts": {
-    "postinstall": "cd client && npm run build",
-    "start": "cd server && npm start"
+    "postinstall": "cd client && npm i && npm run build",
+    "start": "cd server && npm i && npm start"
   },
   "engines": {
-    "node": "10.x"
+    "node": "10.x",
+    "npm": "6.x"
   },
   "repository": {
     "type": "git",
