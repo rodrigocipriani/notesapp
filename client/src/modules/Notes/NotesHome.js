@@ -13,7 +13,6 @@ import MoreVert from "@material-ui/icons/MoreVert";
 import classes from "./NotesHome.module.css";
 import { Paper, Typography } from "@material-ui/core";
 import useDebounce from "../../shared/debounceHook";
-const uuidv1 = require("uuid/v1");
 
 const NotesHome = ({
   notes,
@@ -25,7 +24,6 @@ const NotesHome = ({
   saveContent
 }) => {
   const [initialized, setInitialized] = useState(false);
-  // const [content, setContent] = useState("");
 
   const debounceActiveNote = useDebounce(activeNote, 2000);
 
@@ -44,7 +42,6 @@ const NotesHome = ({
 
   const handleSelectNote = note => () => {
     saveNote(note);
-    // setContent(note.content);
   };
 
   const handleExitNote = () => () => {
