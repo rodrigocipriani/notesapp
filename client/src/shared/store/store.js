@@ -6,12 +6,14 @@ import storage from "redux-persist/lib/storage";
 import reducers from "../reducers";
 import readyStatePromiseMiddleware from "./readyStatePromiseMiddleware";
 
+const SHOW_LOGS = false;
+
 const reducer = combineReducers(reducers);
 
 const persistConfig = { key: "root", storage };
 const persistedReducer = persistReducer(persistConfig, reducer);
 
-const loggerMiddleware = createLogger({ predicate: () => true });
+const loggerMiddleware = createLogger({ predicate: () => SHOW_LOGS });
 
 const middlewares = [thunk, readyStatePromiseMiddleware, loggerMiddleware];
 

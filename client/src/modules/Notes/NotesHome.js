@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { newNote, changeNote, loadNotes } from "./notesActions";
+import { newNote, saveNote, loadNotes, saveContent } from "./notesActions";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -12,10 +12,22 @@ import TextField from "@material-ui/core/TextField";
 import MoreVert from "@material-ui/icons/MoreVert";
 import classes from "./NotesHome.module.css";
 import { Paper, Typography } from "@material-ui/core";
+import useDebounce from "../../shared/debounceHook";
+const uuidv1 = require("uuid/v1");
 
-const NotesHome = ({ notes, changeNote, newNote, loadNotes, loading }) => {
-  const [activeNote, setActiveNote] = useState(null);
+const NotesHome = ({
+  notes,
+  saveNote,
+  newNote,
+  loadNotes,
+  loading,
+  activeNote,
+  saveContent
+}) => {
   const [initialized, setInitialized] = useState(false);
+  // const [content, setContent] = useState("");
+
+  const debounceActiveNote = useDebounce(activeNote, 2000);
 
   useEffect(() => {
     if (!initialized) {
@@ -24,30 +36,33 @@ const NotesHome = ({ notes, changeNote, newNote, loadNotes, loading }) => {
     }
   });
 
-  const handleClickNote = id => () => {
-    // console.log("id", id);
-    setActiveNote(id);
+  useEffect(() => {
+    if (debounceActiveNote && activeNote && activeNote.content) {
+      saveNote(activeNote);
+    }
+  }, [debounceActiveNote]);
+
+  const handleSelectNote = note => () => {
+    saveNote(note);
+    // setContent(note.content);
   };
 
-  const handleExitNote = id => () => {
-    // console.log("id", id);
-    if (activeNote === id) {
-      setActiveNote(null);
-    }
+  const handleExitNote = () => () => {
+    saveNote(activeNote, true);
   };
 
   const handleAddNewNote = () => () => {
-    newNote();
+    const note = {
+      id: null,
+      content: ""
+    };
+    newNote(note);
   };
 
-  const handleChangeNote = note => event => {
-    // console.log("change note ", event.target.value);
-    if (note.new) {
-      setActiveNote(note.id);
-    }
-    changeNote(note.id, event.target.value);
+  const handleChangeNote = event => {
+    saveContent(event.target.value);
   };
-  console.log("loading.notes", loading.notes);
+
   return (
     <Grid container spacing={8}>
       {loading.notes && (
@@ -66,9 +81,9 @@ const NotesHome = ({ notes, changeNote, newNote, loadNotes, loading }) => {
                 role={undefined}
                 dense
                 button
-                onClick={handleClickNote(note.id)}
+                onClick={handleSelectNote(note)}
               >
-                {activeNote === note.id || note.new ? (
+                {activeNote.id === note.id || note.new ? (
                   <TextField
                     id={`textfield-${note.id}`}
                     // label="Content"
@@ -76,10 +91,10 @@ const NotesHome = ({ notes, changeNote, newNote, loadNotes, loading }) => {
                     autoFocus
                     fullWidth
                     // rowsMax="4"
-                    value={note.content}
-                    onChange={handleChangeNote(note)}
+                    value={activeNote.content}
+                    onChange={handleChangeNote}
                     margin="normal"
-                    onBlur={handleExitNote(note.id)}
+                    onBlur={handleExitNote(note)}
                     className={classes.noteTextField}
                   />
                 ) : (
@@ -110,13 +125,15 @@ const NotesHome = ({ notes, changeNote, newNote, loadNotes, loading }) => {
 const mapStateToProps = ({ notesReducer }, ownProps) => {
   return {
     notes: notesReducer.notes,
+    activeNote: notesReducer.activeNote,
     loading: notesReducer.loading
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  newNote: content => dispatch(newNote(content)),
-  changeNote: (id, content) => dispatch(changeNote(id, content)),
+  newNote: note => dispatch(newNote(note)),
+  saveContent: content => dispatch(saveContent(content)),
+  saveNote: (note, close = false) => dispatch(saveNote(note, close)),
   loadNotes: () => dispatch(loadNotes())
 });
 

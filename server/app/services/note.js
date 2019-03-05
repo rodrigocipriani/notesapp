@@ -6,5 +6,17 @@ module.exports = app => {
     return NoteModel.findAll();
   };
 
+  service.saveNote = note => {
+    if (note.id) {
+      return NoteModel.update(note, {
+        where: { id: note.id },
+        returning: true,
+        plain: true
+      });
+    } else {
+      return NoteModel.build(note).save();
+    }
+  };
+
   return service;
 };

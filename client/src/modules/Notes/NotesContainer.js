@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { newNote, changeNote } from "./notesActions";
+import { newNote, saveNote } from "./notesActions";
 import NotesHome from "./NotesHome";
 
 const mapStateToProps = ({ notesReducer }, ownProps) => {
@@ -10,7 +10,7 @@ const mapStateToProps = ({ notesReducer }, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   newNote: content => dispatch(newNote(content)),
-  changeNote: (id, content) => dispatch(changeNote(id, content))
+  saveNote: (id, content) => dispatch(saveNote(id, content))
 });
 
 export default connect(
