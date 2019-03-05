@@ -1,11 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # configs
-/client/src/config.js
-.config.local.js
-.config.development.js
-.config.homolog.js
-.config.production.js
+.env
 
 # build
 /client/build
