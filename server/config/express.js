@@ -9,9 +9,12 @@ const compression = require("compression");
 const modRewrite = require("connect-modrewrite");
 const morgan = require("morgan");
 const ejs = require("ejs");
+const useRedis = require("./useRedis");
 
 module.exports = () => {
   const app = express();
+
+  useRedis(app);
 
   const port = process.env.PORT || config.port;
   app.set("port", port);
