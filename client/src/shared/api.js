@@ -8,6 +8,11 @@ const api = baseUrl => {
   });
 
   create.interceptors.request.use(
+    config => {
+      config.headers["x-auth-token"] = "9f728404-fe19-4d60-a7ed-c49884ea399c";
+      // config.headers.Authorization = localStorage.getItem("token");
+      return config;
+    },
     request => request,
     error => {
       error.msg = "Erro ao tentar enviar dados.";

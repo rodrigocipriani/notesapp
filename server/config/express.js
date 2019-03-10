@@ -9,12 +9,44 @@ const compression = require("compression");
 const modRewrite = require("connect-modrewrite");
 const morgan = require("morgan");
 const ejs = require("ejs");
-const useRedis = require("./useRedis");
+
+const redisSessionExpress = require("../helpers/redisSessionExpress");
+const AuthExpress = require("../helpers/auth/AuthExpress");
+const redisClient = require("./redisClient");
+const CacheExpress = require("../helpers/CacheExpress");
 
 module.exports = () => {
   const app = express();
 
-  useRedis(app);
+  // app.redisClient = redisClient;
+  app.use((req, res, next) => {
+    const cache = new CacheExpress();
+    req.cache = cache;
+    next();
+  });
+
+  /**
+   * Configure redis
+   */
+  redisSessionExpress(app, redisClient);
+
+  /**
+   * Configure Auth
+   */
+  const authExpress = new AuthExpress(app, {
+    authPath: "/api/auth",
+    redirectTo: "/auth/receive",
+    redisClient
+  });
+
+  /**
+   *
+   * !!!!!!!!!!!!!!!!
+   *
+   * Review and encapsulat all
+   *
+   * !!!!!!!!!!!!!!
+   */
 
   const port = process.env.PORT || config.port;
   app.set("port", port);
@@ -22,16 +54,17 @@ module.exports = () => {
   app.set("views", "./app/views");
   app.engine("html", ejs.renderFile);
   app.set("view engine", "html");
-  console.log(`config.corsOriginsAccept`, config.corsOriginsAccept);
+
   app.use(
     cors({
       origin: config.corsOriginsAccept,
-      exposedHeaders: ["x-access-token"],
-      // allowedHeaders: ['Content-Type', 'Authorization'],
+      allowedHeaders: ["x-auth-token", "Content-Type", "Authorization"],
+      exposedHeaders: ["x-auth-token"],
       //  additionalHeaders: ['cache-control', 'x-requested-with'],
       credentials: true
     })
   );
+  app.options("*", cors());
 
   app.use(
     modRewrite([
@@ -66,7 +99,7 @@ module.exports = () => {
   // app.use(erro.handler({token: config.accessToken}));
 
   app.use((err, req, res) => {
-    console.log("caiu aqui", err);
+    console.log("Express general error", err);
 
     let error = err;
     let msg;

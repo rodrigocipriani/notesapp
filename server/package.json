@@ -37,7 +37,8 @@
     "node-serialize": "0.0.4",
     "pg": "^6.4.2",
     "redis": "^2.8.0",
-    "sequelize": "^4.42.0"
+    "sequelize": "^4.42.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

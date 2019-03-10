@@ -1,4 +1,4 @@
-import { notesActionTypes, newNote } from "./notesActions";
+import { notesActionTypes } from "./notesActions";
 
 const initialState = {
   // notes: {id, content}
