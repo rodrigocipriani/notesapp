@@ -6,7 +6,7 @@ const authActionTypes = {
 
 export const loadUser = () => ({
   type: authActionTypes.LOAD_USER,
-  promise: appApi.post("/auth/v1/user")
+  promise: appApi.get("/auth/v1/user")
 });
 
 export { authActionTypes };

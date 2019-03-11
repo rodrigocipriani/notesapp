@@ -7,8 +7,10 @@ module.exports = class AuthExpress {
     this.authPath = authPath || "/auth";
     this.redirectTo = redirectTo || "/auth/receive";
     this.redisClient = redisClient;
-    this.initRoutes();
+
+    // The order makes difference
     this.initAppInterceptors();
+    this.initRoutes();
   }
 
   initRoutes() {
@@ -23,18 +25,16 @@ module.exports = class AuthExpress {
 
     return true;
   }
+
   initAppInterceptors() {
     if (this.redisClient) {
       this.app.use(async (req, res, next) => {
-        console.log("########## req.session.user", req.session.user);
         if (!req.session.user) {
-          const { token } = req.headers || req.body || req.query || req.params;
-          console.log("########## token", req.headers);
+          const token = req.headers["x-auth-token"];
           console.log(`loading user ${token} from cache...`);
 
           if (token) {
             const user = await req.cache.get(token);
-            console.log("########## user", user);
             req.session.user = user;
           }
         }

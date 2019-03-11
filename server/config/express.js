@@ -18,27 +18,6 @@ const CacheExpress = require("../helpers/CacheExpress");
 module.exports = () => {
   const app = express();
 
-  // app.redisClient = redisClient;
-  app.use((req, res, next) => {
-    const cache = new CacheExpress();
-    req.cache = cache;
-    next();
-  });
-
-  /**
-   * Configure redis
-   */
-  redisSessionExpress(app, redisClient);
-
-  /**
-   * Configure Auth
-   */
-  const authExpress = new AuthExpress(app, {
-    authPath: "/api/auth",
-    redirectTo: "/auth/receive",
-    redisClient
-  });
-
   /**
    *
    * !!!!!!!!!!!!!!!!
@@ -59,12 +38,11 @@ module.exports = () => {
     cors({
       origin: config.corsOriginsAccept,
       allowedHeaders: ["x-auth-token", "Content-Type", "Authorization"],
-      exposedHeaders: ["x-auth-token"],
+      exposedHeaders: "x-auth-token",
       //  additionalHeaders: ['cache-control', 'x-requested-with'],
       credentials: true
     })
   );
-  app.options("*", cors());
 
   app.use(
     modRewrite([
@@ -81,6 +59,29 @@ module.exports = () => {
   app.use(require("method-override")());
   app.use(helmet.hidePoweredBy({ setTo: "Cobol" }));
 
+  app.use((req, res, next) => {
+    const cache = new CacheExpress();
+    req.cache = cache;
+    next();
+  });
+
+  /**
+   * Configure redis
+   */
+  redisSessionExpress(app, redisClient);
+
+  /**
+   * Configure Auth
+   */
+  const authExpress = new AuthExpress(app, {
+    authPath: "/api/auth",
+    redirectTo: config.authRedirectClientUrl,
+    redisClient
+  });
+
+  /**
+   * Consign modules
+   */
   consign({ cwd: path.join(process.cwd(), /*"server",*/ "app") })
     .include("models/models.js")
     .then("utils")
