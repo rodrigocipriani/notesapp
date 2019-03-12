@@ -1,27 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { loadUser } from "./authActions";
+import AuthPage from "./AuthPage";
 
-const AuthGate = ({ loading, user, children }) => {
+const AuthGate = ({ loading, user, children, loadUser }) => {
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     if (!initialized) {
-      loadUser();
+      loadUser(null);
       setInitialized(true);
     }
   });
   console.log("user", user);
   if (!user || loading.user) {
-    return "Loading user...";
+    return <AuthPage />;
+    // return "Loading user...";
   }
   return children;
 };
 
-const mapStateToProps = ({ notesReducer }, ownProps) => {
+const mapStateToProps = ({ authReducer }, ownProps) => {
   return {
-    user: notesReducer.user,
-    loading: notesReducer.loading
+    user: authReducer.user,
+    loading: authReducer.loading
   };
 };
 

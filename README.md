@@ -1,3 +1,8 @@
+# Todo´s
+
+[ ] - Alter README.md
+[ ] - Redis connect (and maybe postgres) is creating a lot of connection in same client on requests, FIX IT!
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

@@ -18,6 +18,7 @@
     "dotenv": "^6.2.0",
     "draft-js": "^0.10.5",
     "gh-pages": "^2.0.1",
+    "js-cookie": "^2.2.0",
     "markdown-draft-js": "^1.4.0",
     "markdown-to-jsx": "^6.9.0",
     "prop-types": "^15.7.2",
