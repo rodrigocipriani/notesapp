@@ -13,20 +13,23 @@ const ejs = require("ejs");
 const redisSessionExpress = require("../helpers/redisSessionExpress");
 const AuthExpress = require("../helpers/auth/AuthExpress");
 const CacheExpress = require("../helpers/CacheExpress");
-const redis = require("redis");
+const redisClient = require("../helpers/redisClient");
+const cache = new CacheExpress(redisClient);
+// var ioredis = require("ioredis");
+// var cache = new Redis();
 
-let redisOptions = {
-  host: process.env.REDIS_HOST || "",
-  port: process.env.REDIS_PORT || "",
-  pass: process.env.REDIS_PWD || ""
-  // client: "",
-  // ttl :  260
-};
+// let redisOptions = {
+//   host: process.env.REDIS_HOST || "",
+//   port: process.env.REDIS_PORT || "",
+//   pass: process.env.REDIS_PWD || ""
+//   // client: "",
+//   // ttl :  260
+// };
 
-let redisClient = redis.createClient(redisOptions.port, redisOptions.host, {
-  auth_pass: redisOptions.pass,
-  no_ready_check: true
-});
+// let redisClient = redis.createClient(redisOptions.port, redisOptions.host, {
+//   auth_pass: redisOptions.pass
+//   // no_ready_check: true
+// });
 
 module.exports = () => {
   const app = express();
@@ -73,7 +76,6 @@ module.exports = () => {
   app.use(helmet.hidePoweredBy({ setTo: "Cobol" }));
 
   app.use((req, res, next) => {
-    const cache = new CacheExpress();
     req.cache = cache;
     next();
   });
@@ -89,7 +91,7 @@ module.exports = () => {
   const authExpress = new AuthExpress(app, {
     authPath: "/api/auth",
     redirectTo: config.authRedirectClientUrl,
-    redisClient
+    cache
   });
 
   /**

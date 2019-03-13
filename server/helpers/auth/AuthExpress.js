@@ -2,11 +2,11 @@ const googleAuthRoutes = require("./google/googleAuthRoutes");
 const authRoutes = require("./authRoutes");
 
 module.exports = class AuthExpress {
-  constructor(app, { authPath, redisClient, redirectTo }) {
+  constructor(app, { authPath, cache, redirectTo }) {
     this.app = app;
     this.authPath = authPath || "/auth";
     this.redirectTo = redirectTo || "/auth/receive";
-    this.redisClient = redisClient;
+    this.cache = cache;
 
     // The order makes difference
     this.initAppInterceptors();
@@ -27,7 +27,7 @@ module.exports = class AuthExpress {
   }
 
   initAppInterceptors() {
-    if (this.redisClient) {
+    if (this.cache) {
       this.app.use(async (req, res, next) => {
         if (!req.session.user) {
           const token = req.headers["x-auth-token"];

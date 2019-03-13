@@ -1,23 +1,24 @@
 const redis = require("redis");
 
 module.exports = class CacheExpress {
-  constructor() {
-    let redisOptions = {
-      host: process.env.REDIS_HOST || "",
-      port: process.env.REDIS_PORT || "",
-      pass: process.env.REDIS_PWD || ""
-      // client: "",
-      // ttl :  260
-    };
+  constructor(redisClient) {
+    // let redisOptions = {
+    //   host: process.env.REDIS_HOST || "",
+    //   port: process.env.REDIS_PORT || "",
+    //   pass: process.env.REDIS_PWD || ""
+    //   // client: "",
+    //   // ttl :  260
+    // };
 
-    this.redisClient = redis.createClient(
-      redisOptions.port,
-      redisOptions.host,
-      {
-        auth_pass: redisOptions.pass,
-        no_ready_check: true
-      }
-    );
+    // this.redisClient = redis.createClient(
+    //   redisOptions.port,
+    //   redisOptions.host,
+    //   {
+    //     auth_pass: redisOptions.pass,
+    //     no_ready_check: true
+    //   }
+    // );
+    this.redisClient = redisClient;
   }
 
   set(key, data) {
