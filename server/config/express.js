@@ -9,6 +9,7 @@ const compression = require("compression");
 const modRewrite = require("connect-modrewrite");
 const morgan = require("morgan");
 const ejs = require("ejs");
+const cookieParser = require("cookie-parser");
 
 const redisSessionExpress = require("../helpers/redisSessionExpress");
 const AuthExpress = require("../helpers/auth/AuthExpress");
@@ -34,6 +35,8 @@ const cache = new CacheExpress(redisClient);
 module.exports = () => {
   const app = express();
 
+  app.use(cookieParser());
+
   /**
    *
    * !!!!!!!!!!!!!!!!
@@ -53,8 +56,8 @@ module.exports = () => {
   app.use(
     cors({
       origin: config.corsOriginsAccept,
-      allowedHeaders: ["x-auth-token", "Content-Type", "Authorization"],
-      exposedHeaders: "x-auth-token",
+      // allowedHeaders: ["x-auth-token", "Content-Type", "Authorization"],
+      // exposedHeaders: "x-auth-token",
       //  additionalHeaders: ['cache-control', 'x-requested-with'],
       credentials: true
     })

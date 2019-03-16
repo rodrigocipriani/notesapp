@@ -26,8 +26,8 @@ receiveGoogleCode = redirectTo => async (req, res, next) => {
     // store user in cache by token in case user have token and not session
     // todo: set a expire time
     req.cache.set(token, user);
-
-    res.redirect(`${redirectTo}?token=${token}`);
+    res.cookie("x-auth-token", token);
+    res.redirect(`${redirectTo}`);
     // res.status(200).send({ token });
   } catch (error) {
     console.error(error);

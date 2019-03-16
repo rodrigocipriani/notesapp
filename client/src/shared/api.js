@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 import config from "../config";
 
 const api = baseUrl => {
@@ -9,12 +8,6 @@ const api = baseUrl => {
   });
 
   create.interceptors.request.use(
-    config => {
-      // config.headers["x-auth-token"] = "9f728404-fe19-4d60-a7ed-c49884ea399c";
-      config.headers["x-auth-token"] = Cookies.get("x-auth-token");
-      // config.headers.Authorization = localStorage.getItem("token");
-      return config;
-    },
     request => request,
     error => {
       error.msg = "Erro ao tentar enviar dados.";

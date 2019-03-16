@@ -1,9 +1,8 @@
 import { authActionTypes } from "./authActions";
 
 const initialState = {
-  user: [],
+  user: null,
   googleAuthUrl: null,
-  token: null,
   loading: {
     user: false,
     googleAuthUrl: false
@@ -38,10 +37,6 @@ export default (state = initialState, action) => {
       };
     }
     return { ...state, loading: { ...state.loading, googleAuthUrl: true } };
-  }
-
-  if (type === authActionTypes.STORE_TOKEN) {
-    return { ...state, token: action.payload };
   }
 
   if (type === authActionTypes.LOAD_GOOGLE_AUTH_URL) {

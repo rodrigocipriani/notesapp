@@ -22,7 +22,7 @@
     "connect-modrewrite": "^0.10.2",
     "connect-redis": "^3.4.0",
     "consign": "^0.1.6",
-    "cookie-parser": "^1.4.3",
+    "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
     "dotenv": "^6.2.0",

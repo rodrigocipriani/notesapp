@@ -30,7 +30,7 @@ module.exports = class AuthExpress {
     if (this.cache) {
       this.app.use(async (req, res, next) => {
         if (!req.session.user) {
-          const token = req.headers["x-auth-token"];
+          const token = req.cookie ? req.cookie["x-auth-token"] : null;
           console.log(`loading user ${token} from cache...`);
 
           if (token) {
