@@ -9,42 +9,18 @@ const compression = require("compression");
 const modRewrite = require("connect-modrewrite");
 const morgan = require("morgan");
 const ejs = require("ejs");
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
 
-const redisSessionExpress = require("../helpers/redisSessionExpress");
+// const redisSessionExpress = require("../helpers/redisSessionExpress");
 const AuthExpress = require("../helpers/auth/AuthExpress");
-const CacheExpress = require("../helpers/CacheExpress");
 const redisClient = require("../helpers/redisClient");
+const CacheExpress = require("../helpers/CacheExpress");
 const cache = new CacheExpress(redisClient);
-// var ioredis = require("ioredis");
-// var cache = new Redis();
-
-// let redisOptions = {
-//   host: process.env.REDIS_HOST || "",
-//   port: process.env.REDIS_PORT || "",
-//   pass: process.env.REDIS_PWD || ""
-//   // client: "",
-//   // ttl :  260
-// };
-
-// let redisClient = redis.createClient(redisOptions.port, redisOptions.host, {
-//   auth_pass: redisOptions.pass
-//   // no_ready_check: true
-// });
 
 module.exports = () => {
   const app = express();
 
-  app.use(cookieParser());
-
-  /**
-   *
-   * !!!!!!!!!!!!!!!!
-   *
-   * Review and encapsulat all
-   *
-   * !!!!!!!!!!!!!!
-   */
+  // app.use(cookieParser());
 
   const port = process.env.PORT || config.port;
   app.set("port", port);
@@ -78,23 +54,31 @@ module.exports = () => {
   app.use(require("method-override")());
   app.use(helmet.hidePoweredBy({ setTo: "Cobol" }));
 
-  app.use((req, res, next) => {
-    req.cache = cache;
-    next();
-  });
+  // app.use((req, res, next) => {
+  //   req.cache = cache;
+  //   next();
+  // });
 
   /**
    * Configure redis
    */
-  redisSessionExpress(app, redisClient);
+  // redisSessionExpress(app, redisClient);
 
   /**
    * Configure Auth
    */
-  const authExpress = new AuthExpress(app, {
+  new AuthExpress(app, {
     authPath: "/api/auth",
-    redirectTo: config.authRedirectClientUrl,
-    cache
+    googleClientId: process.env.GOOGLE_CLIENT_ID,
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    googleClientUrl: process.env.GOOGLE_REDIRECT_URL,
+    authRedirectClientUrl:
+      process.env.AUTH_REDIRECT_CLIENT_URL ||
+      "http://localhost:3000/auth/receive",
+    cache: {
+      set: (name, value) => cache.set,
+      get: name => cache.get
+    }
   });
 
   /**

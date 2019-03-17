@@ -2,9 +2,6 @@ require("dotenv").config();
 const path = require("path");
 
 module.exports = {
-  authRedirectClientUrl:
-    process.env.AUTH_REDIRECT_CLIENT_URL ||
-    "http://localhost:3000/auth/receive",
   publicFolder: path.join(process.cwd(), "..", "client", "build"),
   corsOriginsAccept: [
     "http://localhost",

@@ -8,14 +8,14 @@ const authActionTypes = {
 export const loadGoogleAuthUrl = () => {
   return {
     type: authActionTypes.LOAD_GOOGLE_AUTH_URL,
-    promise: appApi.get("auth/v1/google-auth/geturl")
+    promise: appApi.get("auth/google-auth/geturl")
   };
 };
 
 export const loadUser = () => {
   return {
     type: authActionTypes.LOAD_USER,
-    promise: appApi.get("/auth/v1/user")
+    promise: appApi.get("/auth/user")
   };
 };
 

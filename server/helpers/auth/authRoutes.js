@@ -1,7 +1,5 @@
 module.exports = (app, { authPath }) => {
-  app.route(`${authPath}/v1/user`).get((req, res) => {
-    // console.log("User: ", req.session.user);
-
-    res.status(200).send(req.session.user);
+  app.route(`${authPath}/user`).get(async (req, res) => {
+    res.status(200).send(req.authExpress.user);
   });
 };
