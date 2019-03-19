@@ -10,6 +10,7 @@
 /node_modules
 /server/node_modules
 /client/node_modules
+/auth/node_modules
 /.pnp
 .pnp.js
 package-lock.json

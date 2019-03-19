@@ -54,6 +54,11 @@ const AuthPage = ({
         <Typography variant="h6" id="modal-title">
           Text in a modal
         </Typography>
+        <Link href="http://localhost:4000/api/auth/google">
+          <Button variant="contained" color="primary">
+            Login with Google Passport
+          </Button>
+        </Link>
         <Link href={googleAuthUrl}>
           <Button variant="contained" color="primary">
             Login with Google

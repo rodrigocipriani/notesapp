@@ -8,7 +8,8 @@ const authActionTypes = {
 export const loadGoogleAuthUrl = () => {
   return {
     type: authActionTypes.LOAD_GOOGLE_AUTH_URL,
-    promise: appApi.get("auth/google-auth/geturl")
+    payload: "delete this"
+    // promise: appApi.get("auth/google-auth/geturl")
   };
 };
 
