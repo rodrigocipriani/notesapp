@@ -24,7 +24,6 @@ const AuthPage = ({
 
   const { pathname, search } = location;
   const lastFullPath = `${pathname}${search}`;
-  console.log("location", document.location);
   const isShowLogin = !user && !loading.user;
 
   useEffect(() => {

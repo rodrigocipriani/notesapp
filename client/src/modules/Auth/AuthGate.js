@@ -12,6 +12,11 @@ const AuthGate = ({ loading, user, children, loadUser }) => {
       setInitialized(true);
     }
   });
+  console.log("user", user);
+  // console.log("user", user);
+  if (loading.user) {
+    return "Authing...";
+  }
   // console.log("user", user);
   if (!user || loading.user) {
     return <AuthPage />;
