@@ -26,7 +26,7 @@ const server = () => {
   app.use(
     session({
       store: new RedisStore(redisHelpers.redisOptions),
-      secret: "j l543e3 5#%@35 #% 32o5 jk23 ç54l2 3kj45ç 23lk",
+      secret: "j l543e3 5#%@35 #% 32o5 jk23 ç54l2 3kj45ç 23lkf",
       name: "uSession",
       resave: false,
       saveUninitialized: true
