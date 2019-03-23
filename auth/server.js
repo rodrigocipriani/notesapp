@@ -26,7 +26,7 @@ const server = () => {
   app.use(
     session({
       store: new RedisStore(redisHelpers.redisOptions),
-      secret: "j l543e3 5#%@35 #% 32o5 jk23 ç54l2 3kj45ç 23lkf",
+      secret: "j l543e3 5#%@35 #% 32o5 jk23 ç54l2 3kj45ç 23lk",
       name: "uSession",
       resave: false,
       saveUninitialized: true
@@ -46,12 +46,6 @@ const server = () => {
       "!\\api/|\\.html|\\.js|\\.svg|\\.css|\\.png|\\.jpg|\\.woff|\\.woff2|\\.ttf|\\.manifest$ /index.html [L]"
     ])
   );
-  // app.use(
-  //   session({
-  //     secret: "My security 4ç3423j 092309fdj90f3j 0 9",
-  //     name: "uSession"
-  //   })
-  // );
   app.use(express.static(config.publicFolder));
   app.use(compression());
   app.use(morgan("dev"));
