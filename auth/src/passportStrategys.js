@@ -1,7 +1,6 @@
 var passport = require("passport");
 var GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const config = require("../config");
-console.log("config", config);
 
 // Use the GoogleStrategy within Passport.
 //   Strategies in Passport require a `verify` function, which accept
@@ -15,7 +14,8 @@ passport.use(
       callbackURL: config.googleCallbackUrl
     },
     function(accessToken, refreshToken, profile, done) {
-      return done(null, {});
+      console.log("## ", profile);
+      return done(null, { user: "test" });
       // User.findOrCreate({ googleId: profile.id }, function(err, user) {
       //   return done(err, user);
       // });

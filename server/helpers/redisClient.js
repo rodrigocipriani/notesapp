@@ -40,4 +40,4 @@ redisClient.on("ready", function(err) {
   // );
 });
 
-module.exports = redisClient;
+module.exports = { redisClient, redisOptions };

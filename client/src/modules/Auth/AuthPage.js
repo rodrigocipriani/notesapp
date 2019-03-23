@@ -23,6 +23,8 @@ const AuthPage = ({
   const [initialized, setInitialized] = useState(false);
 
   const { pathname, search } = location;
+  const lastFullPath = `${pathname}${search}`;
+  console.log("location", document.location);
   const isShowLogin = !user && !loading.user;
 
   useEffect(() => {
@@ -40,7 +42,7 @@ const AuthPage = ({
       const redirectUrl = cookieUrl !== "/auth/receive" ? cookieUrl : "/";
       history.push(redirectUrl);
     }
-    Cookies.set(LASTFULLPATH_COOKIE_NAME, `${pathname}${search}`);
+    Cookies.set(LASTFULLPATH_COOKIE_NAME, lastFullPath);
   });
 
   return (
@@ -54,7 +56,11 @@ const AuthPage = ({
         <Typography variant="h6" id="modal-title">
           Text in a modal
         </Typography>
-        <Link href="http://localhost:4000/api/auth/google">
+        <Link
+          href={`http://localhost:4000/api/auth/google?redirect=${
+            document.location.href
+          }`}
+        >
           <Button variant="contained" color="primary">
             Login with Google Passport
           </Button>

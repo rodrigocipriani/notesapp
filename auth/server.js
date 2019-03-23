@@ -11,10 +11,27 @@ const ejs = require("ejs");
 const config = require("./config");
 const routes = require("./src/routes");
 const passportStrategys = require("./src/passportStrategys");
+const session = require("express-session");
+const RedisStore = require("connect-redis")(session);
+const redisHelpers = require("./redisHelpers");
+
+// Express Best practices security
+// https://expressjs.com/en/advanced/best-practice-security.html
 
 const server = () => {
   const app = express();
 
+  // app.redisClient = redisHelpers.redisClient();
+  app.set("trust proxy", 1); // trust first proxy
+  app.use(
+    session({
+      store: new RedisStore(redisHelpers.redisOptions),
+      secret: "j l543e3 5#%@35 #% 32o5 jk23 ç54l2 3kj45ç 23lk",
+      name: "uSession",
+      resave: false,
+      saveUninitialized: true
+    })
+  );
   app.set("views", "./src/views");
   app.engine("html", ejs.renderFile);
   app.set("view engine", "html");
@@ -29,6 +46,12 @@ const server = () => {
       "!\\api/|\\.html|\\.js|\\.svg|\\.css|\\.png|\\.jpg|\\.woff|\\.woff2|\\.ttf|\\.manifest$ /index.html [L]"
     ])
   );
+  // app.use(
+  //   session({
+  //     secret: "My security 4ç3423j 092309fdj90f3j 0 9",
+  //     name: "uSession"
+  //   })
+  // );
   app.use(express.static(config.publicFolder));
   app.use(compression());
   app.use(morgan("dev"));
