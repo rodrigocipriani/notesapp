@@ -10,14 +10,13 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  if (action.error) {
-    alert(action.error);
-    return { ...state };
-  }
-
   const type = action.type;
 
   if (type === authActionTypes.LOAD_USER) {
+    if (action.error) {
+      // alert(action.error);
+      return { ...state, loading: { ...state.loading, user: false } };
+    }
     if (action.ready) {
       return {
         ...state,

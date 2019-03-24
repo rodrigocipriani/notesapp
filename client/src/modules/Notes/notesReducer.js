@@ -10,14 +10,12 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  if (action.error) {
-    alert(action.error);
-    return { ...state };
-  }
-
   const type = action.type;
 
   if (type === notesActionTypes.LOAD_NOTES) {
+    if (action.error) {
+      return { ...state, loading: { ...state.loading, notes: false } };
+    }
     if (action.ready) {
       return {
         ...state,
@@ -29,6 +27,9 @@ export default (state = initialState, action) => {
   }
 
   if (type === notesActionTypes.NEW_NOTE) {
+    if (action.error) {
+      return { ...state };
+    }
     return {
       ...state,
       notes: [action.payload, ...state.notes],
@@ -37,6 +38,9 @@ export default (state = initialState, action) => {
   }
 
   if (type === notesActionTypes.SAVE_CONTENT) {
+    if (action.error) {
+      return { ...state };
+    }
     return {
       ...state,
       activeNote: {
@@ -51,6 +55,9 @@ export default (state = initialState, action) => {
     type === notesActionTypes.SAVE_NOTE ||
     type === notesActionTypes.SAVE_AND_CLOSE_NOTE
   ) {
+    if (action.error) {
+      return { ...state };
+    }
     if (action.ready) {
       const activeSavedNote = action.payload.data;
 

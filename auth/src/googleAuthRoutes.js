@@ -1,4 +1,5 @@
 const passport = require("passport");
+const jwt = require("jsonwebtoken");
 const config = require("../config");
 
 const API_PREFIX = config.apiPrefix;
@@ -11,9 +12,9 @@ module.exports = app => {
   //   will redirect the user back to this application at /auth/google/callback
   app.route(`${API_PREFIX}/auth/google`).get(
     (req, res, next) => {
+      console.log("ROUTE /auth/google");
       const { redirect } = req.query;
       req.session.redirect = redirect;
-      console.log("redirect", req.headers.referer);
       next();
     },
     passport.authenticate("google", {
@@ -42,18 +43,22 @@ module.exports = app => {
       failureRedirect: "/login"
     }),
     function(req, res) {
-      console.log(req.user);
-      if (req.user) {
+      const user = req.user;
+      if (user) {
         // todo: Change to save in redis and return just a toke to client
-        console.log(
-          "!!!! todo: Change to save in redis and return just a toke to client"
+        console.error(
+          "!!!! todo: Change to save in redis and return just a token to client"
         );
-        req.session.user = req.user;
+        req.session.user = user;
       }
 
       const redirect = req.session.redirect
         ? req.session.redirect
         : req.headers.referer;
+
+      const token = jwt.sign(user.id, config.jwtSecret);
+      res.cookie("Authorization", token);
+
       res.redirect(redirect);
       // res.redirect("/");
     }
