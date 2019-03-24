@@ -1,4 +1,5 @@
 const config = require("../../config");
+const models = require("../models");
 
 const API_PREFIX = config.apiPrefix;
 

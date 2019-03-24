@@ -8,6 +8,7 @@ if (!process.env.JWT_SECRET) {
     "ERROR: You need to inform your JWT_SECRET on environment variables"
   );
 }
+
 module.exports = {
   apiPrefix: process.env.API_PREFIX || "/api",
   publicFolder: path.join(process.cwd(), "..", "client", "build"),
@@ -25,5 +26,10 @@ module.exports = {
   redisPort: process.env.REDIS_PORT,
   redisPwd: process.env.REDIS_PWD,
   sessionSecret: process.env.SESSION_SECRET,
-  jwtSecret
+  jwtSecret,
+  postgresUser: process.env.POSTGRES_USER,
+  postgresPwd: process.env.POSTGRES_PWD,
+  postgresDB: process.env.POSTGRES_DB,
+  postgresHost: process.env.POSTGRES_HOST,
+  postgresPort: process.env.POSTGRES_PORT
 };

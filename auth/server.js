@@ -16,6 +16,7 @@ const redisHelpers = require("./helpers/redisHelpers");
 const CacheHelper = require("./helpers/CacheHelper");
 const passport = require("passport");
 const passportStrategies = require("./src/auth/passportStrategies");
+// const sequelize = require("./helpers/sequelizeHelper");
 
 // Express Best practices security
 // https://expressjs.com/en/advanced/best-practice-security.html
@@ -25,6 +26,7 @@ const cache = new CacheHelper(redisHelpers.redisClient());
 const server = () => {
   const app = express();
 
+  // app.model = sequelize();
   // app.redisClient = redisHelpers.redisClient();
   app.cache = cache;
   app.use(cookieParser());
