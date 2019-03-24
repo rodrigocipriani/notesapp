@@ -1,9 +1,10 @@
 const redis = require("redis");
+const config = require("../config");
 
 let redisOptions = {
-  host: process.env.REDIS_HOST || "",
-  port: process.env.REDIS_PORT || "",
-  pass: process.env.REDIS_PWD || ""
+  host: config.redisHost || "",
+  port: config.redisPort || "",
+  pass: config.redisPwd || ""
   // client: "",
   // ttl :  260
 };
@@ -19,13 +20,6 @@ const redisClient = () => {
     //   "Bonk. The worker framework cannot connect to redis, which might be ok on a dev server!"
     // );
     console.log("@@@@@@@@@@@@@@@@@@@@@@@", "Resque error : " + err);
-    // redisClient.quit();
-  });
-  redisCli.on("idle", function(err) {
-    // console.log(
-    //   "@@@@@@@@@@@@@@@@@@@@@@@",
-    //   "Redis queue is idle. Shutting down..."
-    // );
     // redisClient.quit();
   });
   redisCli.on("end", function(err) {

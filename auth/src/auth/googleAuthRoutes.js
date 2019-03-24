@@ -1,6 +1,6 @@
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-const config = require("../config");
+const config = require("../../config");
 
 const API_PREFIX = config.apiPrefix;
 
@@ -12,7 +12,6 @@ module.exports = app => {
   //   will redirect the user back to this application at /auth/google/callback
   app.route(`${API_PREFIX}/auth/google`).get(
     (req, res, next) => {
-      console.log("ROUTE /auth/google");
       const { redirect } = req.query;
       req.session.redirect = redirect;
       next();
@@ -49,7 +48,8 @@ module.exports = app => {
         console.error(
           "!!!! todo: Change to save in redis and return just a token to client"
         );
-        req.session.user = user;
+        app.cache.set("user", user);
+        // req.session.user = user;
       }
 
       const redirect = req.session.redirect

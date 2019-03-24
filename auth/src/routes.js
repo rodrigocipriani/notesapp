@@ -1,5 +1,7 @@
 const config = require("../config");
-const googleAuthRoutes = require("./googleAuthRoutes");
+const userRoutes = require("./user/userRoutes");
+const noteRoutes = require("./note/noteRoutes");
+const googleAuthRoutes = require("./auth/googleAuthRoutes");
 
 const API_PREFIX = config.apiPrefix;
 
@@ -11,14 +13,9 @@ const init = app => {
   app.route(`${API_PREFIX}/`).get((req, res) => {
     res.status(200).json("Hello World!");
   });
-  app.route(`${API_PREFIX}/auth/user`).get((req, res) => {
-    console.log("$$$$$$$$$1111");
-    res.status(200).json(req.session.user);
-  });
-  app.route(`${API_PREFIX}/v1/note/list`).get((req, res) => {
-    res.status(200).json([]);
-  });
 
+  userRoutes(app);
+  noteRoutes(app);
   googleAuthRoutes(app);
 };
 

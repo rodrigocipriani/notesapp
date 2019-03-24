@@ -38,7 +38,6 @@ const NotesHome = ({
 
   useEffect(() => {
     if (debounceActiveNote && activeNote && activeNote.content) {
-      console.log("AAAAAAAAAAAAAAA");
       saveNote(activeNote);
     }
   }, [debounceActiveNote]);

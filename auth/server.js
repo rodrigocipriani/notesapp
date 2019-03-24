@@ -12,23 +12,27 @@ const config = require("./config");
 const routes = require("./src/routes");
 const session = require("express-session");
 const RedisStore = require("connect-redis")(session);
-const redisHelpers = require("./redisHelpers");
+const redisHelpers = require("./helpers/redisHelpers");
+const CacheHelper = require("./helpers/CacheHelper");
 const passport = require("passport");
-require("./src/passportStrategies");
+const passportStrategies = require("./src/auth/passportStrategies");
 
 // Express Best practices security
 // https://expressjs.com/en/advanced/best-practice-security.html
+
+const cache = new CacheHelper(redisHelpers.redisClient());
 
 const server = () => {
   const app = express();
 
   // app.redisClient = redisHelpers.redisClient();
+  app.cache = cache;
   app.use(cookieParser());
   app.set("trust proxy", 1); // trust first proxy
   app.use(
     session({
       store: new RedisStore(redisHelpers.redisOptions),
-      secret: "j l543e3 5#%@35 #% 32o5 jk23 ç54l2 3kj45ç 23lk",
+      secret: config.sessionSecret,
       name: "uSession",
       resave: false,
       saveUninitialized: true
@@ -55,6 +59,7 @@ const server = () => {
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(helmet.hidePoweredBy({ setTo: "Cobol" }));
+  passportStrategies(app);
   app.use(passport.initialize());
   app.use((req, res, next) => {
     if (!routes.isRequiredAuth(req)) {
