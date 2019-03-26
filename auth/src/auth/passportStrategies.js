@@ -3,6 +3,7 @@ const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const config = require("../../config");
+const UserService = require("../user/UserService");
 
 const passportStrategies = app => {
   // Use the GoogleStrategy within Passport.
@@ -17,6 +18,9 @@ const passportStrategies = app => {
         callbackURL: config.googleCallbackUrl
       },
       function(accessToken, refreshToken, profile, done) {
+        console.log("accessToken", accessToken);
+        console.log("refreshToken", refreshToken);
+        console.log("profile", profile);
         console.error(
           "!!!! todo: criar usuario no BD a partir dos dados retornados e retornar"
         );
@@ -60,6 +64,7 @@ const passportStrategies = app => {
       // });
       let user = await app.cache.get("user");
       console.log(`@@@user`, user);
+      const response = await UserService.add(user);
       if (user) {
         return done(null, user);
       } else {

@@ -13,7 +13,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         comment: "User name"
-      }
+      },
+      created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW
+      },
+      updated_at: DataTypes.DATE,
+      deleted_at: DataTypes.DATE
     },
     {
       tableName: "user",
@@ -22,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   User.associate = function(models) {
-    //   models.User.hasMany(models.Task);
+    models.User.hasMany(models.UserAuthProvider);
   };
 
   return User;
