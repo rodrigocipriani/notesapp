@@ -16,21 +16,21 @@ const redisClient = () => {
   });
   redisCli.on("error", function(err) {
     // console.log(
-    //   "@@@@@@@@@@@@@@@@@@@@@@@",
+    //   "REDIS CLIENT:",
     //   "Bonk. The worker framework cannot connect to redis, which might be ok on a dev server!"
     // );
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@", "Resque error : " + err);
+    console.log("REDIS CLIENT:", "Resque error : " + err);
     // redisClient.quit();
   });
   redisCli.on("end", function(err) {
     // console.log(
-    //   "@@@@@@@@@@@@@@@@@@@@@@@",
+    //   "REDIS CLIENT:",
     //   "Redis is shutting down. This might be ok if you chose not to run it in your dev environment"
     // );
   });
   redisCli.on("ready", function(err) {
     // console.log(
-    //   "@@@@@@@@@@@@@@@@@@@@@@@",
+    //   "REDIS CLIENT:",
     //   "Redis up! Now connecting the worker queue client..."
     // );
   });

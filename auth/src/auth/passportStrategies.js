@@ -1,7 +1,6 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const JwtStrategy = require("passport-jwt").Strategy;
-const ExtractJwt = require("passport-jwt").ExtractJwt;
 const config = require("../../config");
 const UserService = require("../user/UserService");
 
@@ -32,10 +31,6 @@ const passportStrategies = app => {
         }
 
         return done(null, false);
-
-        // User.findOrCreate({ googleId: profile.id }, function(err, user) {
-        //   return done(err, user);
-        // });
       }
     )
   );
@@ -58,28 +53,24 @@ const passportStrategies = app => {
   passport.use(
     "jwt",
     new JwtStrategy(opts, async function(jwt_payload, done) {
-      console.log(`@@@jwt_payload`, jwt_payload);
-      console.error(
-        "TODO: Testar quando perder o usuário do CACHE buscar no DB"
-      );
-      let user = await app.cache.get("user");
-      // User.findOne({ id: jwt_payload.sub }, function(err, user) {
-      //   if (err) {
-      //     return done(err, false);
-      //   }
-      //   if (user) {
-      //     return done(null, user);
-      //   } else {
-      //     return done(null, false);
-      //     // or you could create a new account
-      //   }
-      // });
-      console.log(`@@@user`, user);
-      if (user) {
-        return done(null, user);
-      } else {
-        return done(null, false);
+      try {
+        let user = await app.cache.get("user");
+        if (user) {
+          return done(null, user);
+        } else {
+          console.log(
+            `Session not found for user id: ${jwt_payload}. Loading by DB...`
+          );
+          user = await UserService.findByPk(jwt_payload);
+          app.cache.set("user", user);
+          if (user) {
+            return done(null, user);
+          }
+        }
+      } catch (error) {
+        console.error(`ERROR: ${error}`);
       }
+      return done(null, false);
     })
   );
 };
