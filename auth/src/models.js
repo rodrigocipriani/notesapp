@@ -36,7 +36,6 @@ sequelize
 const models = [];
 
 models.push("./user/UserModel.js");
-models.push("./user/UserAuthProviderModel.js");
 
 models.forEach(file => {
   var model = sequelize["import"](path.join(__dirname, file));
@@ -44,14 +43,13 @@ models.forEach(file => {
 });
 
 Object.keys(db).forEach(modelName => {
-  console.log("-----modelName", db);
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
 });
 
-// sequelize.sync();
-sequelize.sync({ force: true });
+sequelize.sync();
+// sequelize.sync({ force: true });
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

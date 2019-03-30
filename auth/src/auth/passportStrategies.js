@@ -17,14 +17,22 @@ const passportStrategies = app => {
         clientSecret: config.googleClientSecret,
         callbackURL: config.googleCallbackUrl
       },
-      function(accessToken, refreshToken, profile, done) {
-        console.log("accessToken", accessToken);
-        console.log("refreshToken", refreshToken);
-        console.log("profile", profile);
-        console.error(
-          "!!!! todo: criar usuario no BD a partir dos dados retornados e retornar"
-        );
-        return done(null, { id: 1, name: "Rodrigo Cipriani da Rosa" });
+      async function(accessToken, refreshToken, profile, done) {
+        const user = {
+          id: null,
+          name: profile.displayName,
+          googleId: profile.id
+        };
+
+        try {
+          const data = await UserService.findOrCreate(user);
+          return done(null, data[0]);
+        } catch (error) {
+          console.error(`ERROR: ${error}`);
+        }
+
+        return done(null, false);
+
         // User.findOrCreate({ googleId: profile.id }, function(err, user) {
         //   return done(err, user);
         // });
@@ -51,6 +59,10 @@ const passportStrategies = app => {
     "jwt",
     new JwtStrategy(opts, async function(jwt_payload, done) {
       console.log(`@@@jwt_payload`, jwt_payload);
+      console.error(
+        "TODO: Testar quando perder o usuário do CACHE buscar no DB"
+      );
+      let user = await app.cache.get("user");
       // User.findOne({ id: jwt_payload.sub }, function(err, user) {
       //   if (err) {
       //     return done(err, false);
@@ -62,9 +74,7 @@ const passportStrategies = app => {
       //     // or you could create a new account
       //   }
       // });
-      let user = await app.cache.get("user");
       console.log(`@@@user`, user);
-      const response = await UserService.add(user);
       if (user) {
         return done(null, user);
       } else {

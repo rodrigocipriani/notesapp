@@ -11,8 +11,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         comment: "User name"
+      },
+      googleId: {
+        type: DataTypes.DECIMAL,
+        primaryKey: true,
+        comment: "ID from the google provider"
       },
       created_at: {
         type: DataTypes.DATE,
@@ -28,9 +33,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  User.associate = function(models) {
-    models.User.hasMany(models.UserAuthProvider);
-  };
+  // User.associate = function(models) {
+  //   models.User.hasMany(models.UserAuthProvider);
+  // };
 
   return User;
 };

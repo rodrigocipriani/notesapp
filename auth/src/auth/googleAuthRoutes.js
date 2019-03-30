@@ -44,10 +44,6 @@ module.exports = app => {
     function(req, res) {
       const user = req.user;
       if (user) {
-        // todo: Change to save in redis and return just a toke to client
-        console.error(
-          "!!!! todo: Change to save in redis and return just a token to client"
-        );
         app.cache.set("user", user);
         // req.session.user = user;
       }
