@@ -2,9 +2,8 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const JwtStrategy = require("passport-jwt").Strategy;
 const config = require("../../config");
-const UserService = require("../user/UserService");
 
-const passportStrategies = app => {
+module.exports = app => {
   // Use the GoogleStrategy within Passport.
   //   Strategies in Passport require a `verify` function, which accept
   //   credentials (in this case, an accessToken, refreshToken, and Google
@@ -24,7 +23,7 @@ const passportStrategies = app => {
         };
 
         try {
-          const data = await UserService.findOrCreate(user);
+          const data = await app.service.user.findOrCreate(user);
           return done(null, data[0]);
         } catch (error) {
           console.error(`ERROR: ${error}`);
@@ -61,7 +60,7 @@ const passportStrategies = app => {
           console.log(
             `Session not found for user id: ${jwt_payload}. Loading by DB...`
           );
-          user = await UserService.findByPk(jwt_payload);
+          user = await app.service.user.findByPk(jwt_payload);
           app.cache.set("user", user);
           if (user) {
             return done(null, user);
@@ -74,5 +73,3 @@ const passportStrategies = app => {
     })
   );
 };
-
-module.exports = passportStrategies;
